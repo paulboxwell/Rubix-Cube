@@ -34,16 +34,13 @@ class Shape:
 		#print(self.points_2D)
 		
 	def Rotate_x(self, dir):
-		direction = [1,0,0]
-		
-		
-		self.angle_x += math.pi / 10 * dir
+		self.angle_x +=  dir
 		
 	def Rotate_y(self, dir):
-		self.angle_y += math.pi / 10 * dir
+		self.angle_y += dir
 		
 	def Rotate_z(self, dir):
-		self.angle_z += math.pi / 10 * dir
+		self.angle_z += dir
 		
 	def Matrix_Multiplication(self, matrix1, matrix2):
 		# Construct a result matrix
@@ -53,9 +50,6 @@ class Shape:
 			for j in range(len(matrix2[0])):
 				row.append(0)
 			pmatrix.append(row)
-			
-		#print(rmatrix)
-		#print(pmatrix)
 				
 		# Populate the results matrix
 		for i in range(len(matrix1)):
@@ -70,7 +64,7 @@ class Shape:
 
 		matrix1 = self.points_3D
 				   
-		angle = self.angle_y
+		angle = self.angle_y * math.pi / 10
 		s = math.sin(angle)
 		c = math.cos(angle)
 		
@@ -81,7 +75,7 @@ class Shape:
 				   
 		pmatrix = self.Matrix_Multiplication(matrix1,matrix2)
 		
-		angle = self.angle_z
+		angle = self.angle_z * math.pi / 10
 		s = math.sin(angle)
 		c = math.cos(angle)
 		
@@ -92,7 +86,7 @@ class Shape:
 				   
 		pmatrix = self.Matrix_Multiplication(pmatrix,matrix2)
 		
-		angle = self.angle_x
+		angle = self.angle_x * math.pi / 10
 		s = math.sin(angle)
 		c = math.cos(angle)
 		
@@ -111,30 +105,13 @@ class Shape:
 	def Matrix_3D_to_2D(self):
 	# Python Program - Matrix Multiplication
 	
-	
 	# (X,3)      (3,2)     = (X,2)
-	# points_3D  Matrix1     points_2D
-	
-	#  5x3 3x2 = 5x2
-		
+	# points_3D  Matrix2     points_2D	
 		
 		matrix1 = self.points_3D_transposed
 		matrix2 = [[1, 0], #x
 				   [0, 1], #y
-				   [0.3, 0.6]] #z  [0.3, 0.6]
-
-
-
-		#matrix1 = [[1, 2, 3],		3x3 3x4  = 3x4
-		#	   [4, 5, 6],
-		#	   [7, 8, 9]]
-		#matrix2 = [[10, 11, 12, 13],
-		#	   [14, 15, 16, 17],
-		#	   [18, 19, 20, 21]]
-			   
-		#rmatrix = [[0, 0, 0, 0],
-		#	   [0, 0, 0, 0],
-		#	   [0, 0, 0, 0]]
+				   [0.3, 0.6]] #z
 		
 		# Construct a result matrix
 		pmatrix = []
@@ -143,9 +120,6 @@ class Shape:
 			for j in range(len(matrix2[0])):
 				row.append(0)
 			pmatrix.append(row)
-			
-		#print(rmatrix)
-		#print(pmatrix)
 				
 		# Populate the results matrix
 		for i in range(len(matrix1)):
@@ -153,8 +127,6 @@ class Shape:
 				for k in range(len(matrix2)):
 					temp = matrix1[i][k] * matrix2[k][j]
 					pmatrix[i][j] += temp
-		#for r in pmatrix:
-		#	print(r)
 		
 		self.points_2D = pmatrix
 
@@ -415,11 +387,27 @@ def draw():
 	Shapes.sort(key=lambda x: sum(c[2] for c in x.points_3D_transposed), reverse=False)
 	for shape in Shapes:
 		fill_shape(shape)
+		
+	#reset position
+	for shape in Shapes:
+		if (shape.angle_x % 5) == 0 and (shape.angle_y % 5) == 0 and (shape.angle_z % 5) == 0:
+			shape.points_3D = shape.points_3D_transposed
+			shape.angle_y = 0
+			shape.angle_x = 0
+			shape.angle_z = 0
+	
 
 def callback(source):
 	#print ("called the callback from: " + source)
 	if source == 'b':
 		root.title("b")
+	if source == 'reset':
+		root.title("reset")
+		for shape in Shapes:
+			shape.points_3D = shape.points_3D_transposed
+			shape.angle_y = 0
+			shape.angle_x = 0
+			shape.angle_z = 0
 	if source == 'a':
 		root.title("a")
 		for shape in Shapes:
@@ -519,7 +507,7 @@ root.config(menu=menu)
 
 filemenu = tkinter.Menu(menu)
 menu.add_cascade(label="File", menu=filemenu)
-filemenu.add_command(label="New", command= lambda: callback('a'))
+filemenu.add_command(label="New", command= lambda: callback('reset'))
 filemenu.add_command(label="Open...", command= lambda: callback('b'))
 filemenu.add_separator()
 filemenu.add_command(label="Exit", command= lambda: callback('c'))
