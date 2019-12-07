@@ -7,6 +7,8 @@ import math
 Shapes = []
 
 
+
+
 class Shape:
 	def __init__(self, x, y, colour):
 		self.x = x
@@ -32,13 +34,16 @@ class Shape:
 		#print(self.points_2D)
 		
 	def Rotate_x(self, dir):
+		direction = [1,0,0]
+		
+		
 		self.angle_x += math.pi / 10 * dir
 		
 	def Rotate_y(self, dir):
 		self.angle_y += math.pi / 10 * dir
 		
 	def Rotate_z(self, dir):
-		self.angle_y += math.pi / 10 * dir
+		self.angle_z += math.pi / 10 * dir
 		
 	def Matrix_Multiplication(self, matrix1, matrix2):
 		# Construct a result matrix
@@ -69,10 +74,10 @@ class Shape:
 		s = math.sin(angle)
 		c = math.cos(angle)
 		
-		#rotate in the Z axiz
-		matrix2 = [[s, c, 0],
-				   [0, 0, 1],
-				   [c, -s, 0]]
+		#rotate in the Y axiz
+		matrix2 = [[1, 0, 0],
+				   [0, c, s],
+				   [0, -s, c]]		
 				   
 		pmatrix = self.Matrix_Multiplication(matrix1,matrix2)
 		
@@ -80,10 +85,10 @@ class Shape:
 		s = math.sin(angle)
 		c = math.cos(angle)
 		
-		#rotate in the x axiz
-		matrix2 = [[0, c, s],
-				   [1, 0, 0],
-				   [0, -s, c]]
+		#rotate in the Z axiz
+		matrix2 = [[c, s, 0],
+				   [-s, c, 0],
+				   [0, 0, 1]]
 				   
 		pmatrix = self.Matrix_Multiplication(pmatrix,matrix2)
 		
@@ -91,10 +96,10 @@ class Shape:
 		s = math.sin(angle)
 		c = math.cos(angle)
 		
-		#rotate in the Y axiz
-		matrix2 = [[-s, 0, c],
+		#rotate in the X axiz
+		matrix2 = [[c, 0, s],
 				   [0, 1, 0],
-				   [c, 0, s]]
+				   [-s, 0, c]]
 		
 		pmatrix = self.Matrix_Multiplication(pmatrix,matrix2)
 		
@@ -449,11 +454,53 @@ def callback(source):
 				shape.Rotate_x(-1)
 		draw()
 		
+	if source == 'y_up':
+		root.title("y_up")
+		for shape in Shapes:
+			if(shape.points_3D_transposed[0][1] < -25):
+				shape.Rotate_x(1)
+		draw()
+		
+	if source == 'y_down2':
+		root.title("y_down2")
+		for shape in Shapes:
+			if(shape.points_3D_transposed[0][1] >25):
+				shape.Rotate_x(-1)
+		draw()
+		
+	if source == 'y_up2':
+		root.title("y_up2")
+		for shape in Shapes:
+			if(shape.points_3D_transposed[0][1] >25):
+				shape.Rotate_x(1)
+		draw()
+		
 	if source == 'z_down':
 		root.title("z_down")
 		for shape in Shapes:
 			if(shape.points_3D_transposed[0][2] < -25):
 				shape.Rotate_z(-1)
+		draw()
+		
+	if source == 'z_up':
+		root.title("z_down")
+		for shape in Shapes:
+			if(shape.points_3D_transposed[0][2] < -25):
+				shape.Rotate_z(1)
+		draw()
+		
+	if source == 'z_down2':
+		root.title("z_down")
+		for shape in Shapes:
+			if(shape.points_3D_transposed[0][2] > 25):
+				shape.Rotate_z(-1)
+		draw()
+		
+	if source == 'z_up2':
+		root.title("z_down")
+		for shape in Shapes:
+			if(shape.points_3D_transposed[0][2] > 25):
+				shape.Rotate_z(1)
 		draw()
 		
 	if source == 'c':
@@ -494,8 +541,29 @@ x_up.place(height=20, width=80, x=80, y=0)
 x_down = tkinter.Button(root, text="Top (right)", command= lambda: callback('x_down'))
 x_down.place(height=20, width=80, x=80, y=20)
 
+y_up = tkinter.Button(root, text="Top (left)", command= lambda: callback('y_up'))
+y_up.place(height=20, width=80, x=0, y=100)
+
 y_down = tkinter.Button(root, text="Top (right)", command= lambda: callback('y_down'))
-y_down.place(height=20, width=80, x=80, y=120)
+y_down.place(height=20, width=80, x=80, y=100)
+
+y_up2 = tkinter.Button(root, text="Top (left)", command= lambda: callback('y_up2'))
+y_up2.place(height=20, width=80, x=0, y=120)
+
+y_down2 = tkinter.Button(root, text="Top (right)", command= lambda: callback('y_down2'))
+y_down2.place(height=20, width=80, x=80, y=120)
+
+z_up = tkinter.Button(root, text="Top (left)", command= lambda: callback('z_up'))
+z_up.place(height=20, width=80, x=0, y=200)
+
+z_down = tkinter.Button(root, text="Top (right)", command= lambda: callback('z_down'))
+z_down.place(height=20, width=80, x=80, y=200)
+
+z_up2 = tkinter.Button(root, text="Top (left)", command= lambda: callback('z_up2'))
+z_up2.place(height=20, width=80, x=0, y=220)
+
+z_down2 = tkinter.Button(root, text="Top (right)", command= lambda: callback('z_down2'))
+z_down2.place(height=20, width=80, x=80, y=220)
 
 
 w = tkinter.Canvas(root, width=300, height=300)
