@@ -4,6 +4,8 @@ import tkinter
 import random
 import math
 
+import time
+
 Shapes = []
 
 
@@ -401,6 +403,11 @@ def callback(source):
 	#print ("called the callback from: " + source)
 	if source == 'b':
 		root.title("b")
+		for i in range(1,10):
+			time.sleep(1)
+			for shape in Shapes:
+				shape.Rotate_y(1)
+			draw()
 	if source == 'reset':
 		root.title("reset")
 		for shape in Shapes:
@@ -490,6 +497,43 @@ def callback(source):
 			if(shape.points_3D_transposed[0][2] > 25):
 				shape.Rotate_z(1)
 		draw()
+	
+	#rotation of whole cube
+	if source == 'z_R':
+		root.title("z_R")
+		for shape in Shapes:
+			shape.Rotate_z(1)
+		draw()
+		
+	if source == 'z_L':
+		root.title("z_L")
+		for shape in Shapes:
+			shape.Rotate_z(-1)
+		draw()
+		
+	if source == 'y_R':
+		root.title("y_R")
+		for shape in Shapes:
+			shape.Rotate_y(1)
+		draw()
+		
+	if source == 'y_L':
+		root.title("y_L")
+		for shape in Shapes:
+			shape.Rotate_y(-1)
+		draw()
+		
+	if source == 'x_R':
+		root.title("x_R")
+		for shape in Shapes:
+			shape.Rotate_x(1)
+		draw()
+		
+	if source == 'x_L':
+		root.title("x_L")
+		for shape in Shapes:
+			shape.Rotate_x(-1)
+		draw()
 		
 	if source == 'c':
 		root.title("c")
@@ -552,6 +596,25 @@ z_up2.place(height=20, width=80, x=0, y=220)
 
 z_down2 = tkinter.Button(root, text="Top (right)", command= lambda: callback('z_down2'))
 z_down2.place(height=20, width=80, x=80, y=220)
+
+#rotation of whole cube
+z_L = tkinter.Button(root, text="Z Left", command= lambda: callback('z_L'))
+z_L.place(height=20, width=80, x=0, y=240)
+
+z_R = tkinter.Button(root, text="Z Right", command= lambda: callback('z_R'))
+z_R.place(height=20, width=80, x=80, y=240)
+
+y_L = tkinter.Button(root, text="Y Left", command= lambda: callback('y_L'))
+y_L.place(height=20, width=80, x=0, y=260)
+
+y_R = tkinter.Button(root, text="Y Right", command= lambda: callback('y_R'))
+y_R.place(height=20, width=80, x=80, y=260)
+
+x_L = tkinter.Button(root, text="X Left", command= lambda: callback('x_L'))
+x_L.place(height=20, width=80, x=0, y=280)
+
+x_R = tkinter.Button(root, text="X Right", command= lambda: callback('x_R'))
+x_R.place(height=20, width=80, x=80, y=280)
 
 
 w = tkinter.Canvas(root, width=300, height=300)
